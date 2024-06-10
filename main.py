@@ -1,22 +1,20 @@
 from pycaw.pycaw import AudioUtilities
 
 
+
+def change_whatsapp_volume():
+    try:
+        sessions = AudioUtilities.GetAllSessions()
+        for session in sessions:
+            volume = session.SimpleAudioVolume
+            if session.Process and session.Process.name() == "Whatsapp.exe":
+                volume.SetMasterVolume(0.5, None)
+                print("Volume adjusted for WhatsApp.")
+    except Exception as e:
+        print(f"ERROR FOUND: {e}")
+
 def main():
-
-    sessions = AudioUtilities.GetAllSessions()
-    for session in sessions:
-        volume = session.channelAudioVolume()
-        print(f"Session {session}")
-        count = volume.GetChannelCount()
-        print(f"COUNT: {count}")
-        volumes = [volume.GetChannelVolume(i) for i in range(count)]
-        print(f"    volumes = {volumes}")
-        if session.Process and session.Process.name() == "WhatsApp.exe":
-            volume.SetChannelVolume(0, 0.1, None)
-            print("    Set the volume of left channel to 0.5!")
-            volume.SetChannelVolume(1, 0.1, None)
-            print("    Set the volume of right channel to 0.5!")
-
-
+    change_whatsapp_volume()
+    
 if __name__ == "__main__":
     main()
